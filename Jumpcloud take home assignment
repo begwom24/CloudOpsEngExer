@@ -1,0 +1,20 @@
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.get("/manage_file")
+def get_filel():
+    try: 
+        url = 'https://www.learningcontainer.com/wp-content/uploads/2020/04/sample-text-file.txt'
+        response = request.get(url, allow_redirects=True)
+        response.raise_for_status()
+        data = response.json()
+        if data['action'] == 'download':
+         open('file.txt', 'wb').write(response.content)
+         return 200  
+        elif data['action'] == 'download': 
+         with open('readme.txt') as f:
+            lines = f.readlines()
+        return lines, 200
+    except request.exceptions.RequestException as e:
+        raise SystemExit(e)
